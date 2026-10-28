@@ -24,9 +24,9 @@ Requirements: Node.js 20.9 or later and npm.
 	npx supabase db push
 	```
 
-	For a local Supabase stack, start Docker Desktop, then run `npx supabase start` and `npx supabase db reset`. The local email confirmation link is captured by Inbucket at <http://localhost:54324>.
+	For a local Supabase stack, start Docker Desktop, then run `npx supabase start` and `npx supabase db reset`.
 5. In **Authentication → URL Configuration**, set the Site URL to `http://localhost:3000` and add `http://localhost:3000/auth/callback` to the Redirect URLs list. For deployment, add the production callback URL too.
-6. In **Authentication → Sign In / Providers**, enable Email. Email confirmation can remain enabled; CampusBid shows a confirmation state and exchanges the callback code at `/auth/callback`.
+6. In **Authentication → Sign In / Providers → Email**, enable Email and turn **Confirm email** off for immediate sign-in after signup. The local Supabase config also sets `enable_confirmations = false`; to apply this to the hosted project, run `npx supabase config push` and review each displayed change, or change the toggle in the Dashboard.
 7. Campus identifiers are currently self-reported and are **not verified** by a campus directory or verified-email domain.
 8. Start the app with `npm run dev` and open <http://localhost:3000>.
 
