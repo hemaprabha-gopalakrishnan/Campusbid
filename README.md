@@ -16,16 +16,15 @@ Requirements: Node.js 20.9 or later and npm.
 1. Create a Supabase project. In **Project Settings → API** or the project **Connect** dialog, copy the project URL and publishable key.
 2. Create `.env.local` in the project root and set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` to those values. Never put a Supabase secret/service-role key in a `NEXT_PUBLIC_` variable or browser code.
 3. Install dependencies with `npm install`.
-4. Initialize Supabase CLI config once, then link the project and apply migrations:
+4. Link the project and apply migrations using the committed `supabase/config.toml`:
 
 	```powershell
-	npx supabase init
 	npx supabase login
 	npx supabase link --project-ref YOUR_PROJECT_REF
 	npx supabase db push
 	```
 
-	For a local Supabase stack, run `npx supabase start` and `npx supabase db reset` after initialization. The local email confirmation link is captured by Inbucket at <http://localhost:54324>.
+	For a local Supabase stack, start Docker Desktop, then run `npx supabase start` and `npx supabase db reset`. The local email confirmation link is captured by Inbucket at <http://localhost:54324>.
 5. In **Authentication → URL Configuration**, set the Site URL to `http://localhost:3000` and add `http://localhost:3000/auth/callback` to the Redirect URLs list. For deployment, add the production callback URL too.
 6. In **Authentication → Sign In / Providers**, enable Email. Email confirmation can remain enabled; CampusBid shows a confirmation state and exchanges the callback code at `/auth/callback`.
 7. Campus identifiers are currently self-reported and are **not verified** by a campus directory or verified-email domain.
