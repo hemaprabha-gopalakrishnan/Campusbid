@@ -132,8 +132,8 @@ export function ListingForm({ mode, listingId, defaultValues, existingImages = [
           if (uploadError) {
             await supabase.storage.from("listing-images").remove(uploadedPaths);
             const uploadMessage = uploadError.message.toLowerCase();
-            if (uploadMessage.includes("bucket not found") || uploadMessage.includes("nosuchbucket")) {
-              setFormError("Photo storage is not initialized. Apply the Supabase migrations with `npx supabase db push`, then try again.");
+            if (uploadError.statusCode === "404" || uploadMessage.includes("bucket not found") || uploadMessage.includes("nosuchbucket")) {
+              setFormError("Photo storage is not initialized. Link this Supabase project and run `npx supabase db push`, then try again.");
             } else if (uploadError.statusCode === "403" || uploadMessage.includes("row-level security")) {
               setFormError("Supabase denied this photo upload. Confirm you are signed in and the Storage policies from the migrations are applied.");
             } else {
