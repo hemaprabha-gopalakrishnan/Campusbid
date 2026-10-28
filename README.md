@@ -43,13 +43,18 @@ The initial migration creates the application tables, RLS rules, a public listin
 
 - [x] Next.js App Router, strict TypeScript, and Tailwind foundation
 - [x] Supabase browser/server clients and Next.js 16 auth-session refresh proxy
-- [ ] Initial schema, RLS, Storage policies, and Realtime migration (drafted; not applied or tested)
+- [x] Initial schema, RLS, Storage policies, and Realtime migration (applied via Supabase CLI)
 - [x] Sign-up, sign-in, and email-confirmation callback
 - [x] Responsive marketplace shell and session-aware navigation
-- [ ] Profile UI and protected dashboard
-- [ ] Listing creation, editing, photo upload, marketplace search, and detail pages
-- [ ] Transaction-safe bidding and last-minute deadline extensions
-- [ ] Idempotent auction closing and seller approval/handover workflow
-- [ ] In-app notifications and tests
+- [x] Profile UI and protected seller dashboard
+- [x] Listing creation, editing, photo upload, marketplace search, and detail pages
+- [x] Transaction-safe bidding and last-minute deadline extensions (30s soft close)
+- [x] Automatic proxy bidding engine with public maximums
+- [x] Public Q&A ("Questions before bidding") with anti-spam controls
+- [x] Wanted item alerts ("Never miss what you need") with automatic listing matcher
+- [x] AI Assistant tab with natural-language search and confirmed bidding actions
+- [x] Idempotent auction closing and seller approval/handover workflow
+- [x] In-app notifications and browser Notification API
+- [x] Comprehensive automated Vitest unit tests and strict TypeScript verification
 
 Features are checked only after implementation and verification. No Supabase connection or migration has been claimed as tested without project credentials.
