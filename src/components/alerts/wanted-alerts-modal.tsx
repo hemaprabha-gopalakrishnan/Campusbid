@@ -29,13 +29,7 @@ export function WantedAlertsModal({ isOpen, onClose }: WantedAlertsModalProps) {
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      loadAlerts();
-    }
-  }, [isOpen]);
-
-  async function loadAlerts() {
+  async function refreshAlerts() {
     setLoading(true);
     try {
       const data = await getUserWantedAlerts();
@@ -44,6 +38,20 @@ export function WantedAlertsModal({ isOpen, onClose }: WantedAlertsModalProps) {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    if (!isOpen) return;
+    let isCurrent = true;
+    getUserWantedAlerts().then((data) => {
+      if (isCurrent) {
+        setAlerts(data);
+        setLoading(false);
+      }
+    });
+    return () => {
+      isCurrent = false;
+    };
+  }, [isOpen]);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -60,7 +68,7 @@ export function WantedAlertsModal({ isOpen, onClose }: WantedAlertsModalProps) {
         setTitle("");
         setMaxPrice(400);
         setFeedback(res.message || "Alert saved!");
-        await loadAlerts();
+        await refreshAlerts();
       } else {
         setFeedback(res.message);
       }

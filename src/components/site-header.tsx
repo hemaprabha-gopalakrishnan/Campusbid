@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { ArrowRight, Gavel, LogOut } from "lucide-react";
-import { signOut } from "@/app/actions/auth";
+import { Gavel } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { HeaderActions } from "./header-actions";
 
-async function AccountActions() {
+async function HeaderUserActions() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
   if (!url || !publishableKey) {
-    return <SignedOutActions />;
+    return <HeaderActions user={null} />;
   }
 
   const supabase = await createClient();
@@ -17,7 +17,7 @@ async function AccountActions() {
   const userId = claimsData?.claims?.sub;
 
   if (error || !userId) {
-    return <SignedOutActions />;
+    return <HeaderActions user={null} />;
   }
 
   const { data: profile } = await supabase
@@ -27,55 +27,18 @@ async function AccountActions() {
     .maybeSingle();
 
   return (
-    <div className="flex items-center gap-3">
-      <Link className="hidden text-sm font-medium text-[#625e69] hover:text-[#282342] sm:inline" href="/my-listings">
-        My listings
-      </Link>
-      <Link className="inline-flex h-9 items-center rounded-md bg-[#c9ef72] px-3 text-xs font-semibold text-[#282342] transition hover:bg-[#d8f59a] sm:text-sm" href="/listings/new">
-        <span className="sm:hidden">List</span>
-        <span className="hidden sm:inline">List an item</span>
-      </Link>
-      <span className="hidden max-w-36 truncate text-sm font-medium text-[#514879] sm:inline">
-        {profile?.display_name ?? "Campus student"}
-      </span>
-      <form action={signOut}>
-        <button
-          aria-label="Sign out"
-          className="grid size-10 place-items-center rounded-md border border-[#e6e3dd] text-[#514879] transition hover:bg-white"
-          title="Sign out"
-          type="submit"
-        >
-          <LogOut size={17} aria-hidden="true" />
-        </button>
-      </form>
-    </div>
-  );
-}
-
-function SignedOutActions() {
-  return (
-    <div className="flex items-center gap-2">
-      <Link
-        className="px-1 py-2 text-[13px] font-medium text-[#514879] hover:text-[#282342] sm:px-3 sm:text-sm"
-        href="/sign-in"
-      >
-        Sign in
-      </Link>
-      <Link
-        className="inline-flex h-10 items-center gap-2 rounded-md bg-[#514879] px-3 text-[13px] font-semibold text-white transition hover:bg-[#40385f] sm:px-4 sm:text-sm"
-        href="/sign-up"
-      >
-        <span className="sm:hidden">Join</span>
-        <span className="hidden sm:inline">Join CampusBid</span>
-        <ArrowRight size={15} aria-hidden="true" />
-      </Link>
-    </div>
+    <HeaderActions
+      user={{
+        id: userId,
+        displayName: profile?.display_name ?? "Campus student",
+      }}
+    />
   );
 }
 
 export function SiteHeader() {
   return (
-    <header className="border-b border-[#e6e3dd] bg-[#fbfaf7]">
+    <header className="border-b border-[#e6e3dd] bg-[#fbfaf7] sticky top-0 z-40 backdrop-blur-md bg-opacity-95">
       <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-4 sm:px-7 lg:px-10">
         <Link href="/" className="inline-flex items-center gap-2.5" aria-label="CampusBid home">
           <span className="grid size-9 place-items-center rounded-md bg-[#c9ef72] text-[#282342]">
@@ -83,12 +46,16 @@ export function SiteHeader() {
           </span>
           <span className="text-[15px] font-semibold text-[#282342]">CampusBid</span>
         </Link>
-        <nav className="flex items-center gap-3 sm:gap-6" aria-label="Main navigation">
-          <Link className="hidden text-sm font-medium text-[#625e69] hover:text-[#282342] sm:inline" href="#marketplace">
+
+        <nav className="flex items-center gap-2 sm:gap-4" aria-label="Main navigation">
+          <Link
+            className="hidden text-xs font-semibold text-[#625e69] hover:text-[#282342] md:inline"
+            href="/#marketplace"
+          >
             Marketplace
           </Link>
-          <Suspense fallback={<SignedOutActions />}>
-            <AccountActions />
+          <Suspense fallback={<HeaderActions user={null} />}>
+            <HeaderUserActions />
           </Suspense>
         </nav>
       </div>

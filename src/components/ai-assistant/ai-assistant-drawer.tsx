@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, Bot, Check, Gavel, LoaderCircle, Send, ShieldCheck, Sparkles, X } from "lucide-react";
+import { ArrowRight, Check, Gavel, LoaderCircle, Send, ShieldCheck, Sparkles, X } from "lucide-react";
 import { submitBid } from "@/lib/listings/bidding-actions";
+
+let msgIdCounter = 0;
 
 type ListingMatch = {
   id: string;
@@ -60,7 +62,7 @@ export function AIAssistantDrawer({ isOpen, onClose }: AIAssistantDrawerProps) {
     if (!textToSend.trim() || loading) return;
 
     const userMsg: ChatMessage = {
-      id: String(Date.now()),
+      id: `msg-${++msgIdCounter}`,
       sender: "user",
       text: textToSend,
     };
@@ -79,7 +81,7 @@ export function AIAssistantDrawer({ isOpen, onClose }: AIAssistantDrawerProps) {
 
       const data = await res.json();
       const assistantMsg: ChatMessage = {
-        id: String(Date.now() + 1),
+        id: `msg-${++msgIdCounter}`,
         sender: "assistant",
         text: data.reply || "Here is what I found on campus:",
         listings: data.matchingListings || [],
@@ -91,7 +93,7 @@ export function AIAssistantDrawer({ isOpen, onClose }: AIAssistantDrawerProps) {
       setMessages((prev) => [
         ...prev,
         {
-          id: String(Date.now() + 1),
+          id: `msg-${++msgIdCounter}`,
           sender: "assistant",
           text: "I couldn't reach the campus catalog. Please check your connection and try again.",
         },

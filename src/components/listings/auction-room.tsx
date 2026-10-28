@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Clock, ShieldCheck, Tag, User } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Tag, User } from "lucide-react";
 import { formatPaiseAsINR } from "@/lib/listings/money";
 import { createClient } from "@/lib/supabase/client";
 import { closeAuctionAction } from "@/lib/listings/bidding-actions";
@@ -36,7 +36,7 @@ const conditionLabels: Record<string, string> = {
 
 export function AuctionRoom({ initialListing }: AuctionRoomProps) {
   const router = useRouter();
-  const [listing, setListing] = useState<ListingDetail>(initialListing);
+  const listing = initialListing;
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   // Subscribe to Supabase Realtime changes for this auction
@@ -99,11 +99,6 @@ export function AuctionRoom({ initialListing }: AuctionRoomProps) {
       supabase.removeChannel(channel);
     };
   }, [listing.id, router]);
-
-  // Keep state updated when server re-renders initialListing
-  useEffect(() => {
-    setListing(initialListing);
-  }, [initialListing]);
 
   async function handleExpire() {
     await closeAuctionAction(listing.id);

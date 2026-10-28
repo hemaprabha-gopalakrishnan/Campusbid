@@ -1,15 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function useBrowserNotifications() {
-  const [permission, setPermission] = useState<NotificationPermission>("default");
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && "Notification" in window) {
-      setPermission(Notification.permission);
-    }
-  }, []);
+  const [permission, setPermission] = useState<NotificationPermission>(() =>
+    typeof window !== "undefined" && "Notification" in window ? Notification.permission : "default",
+  );
 
   async function requestPermission(): Promise<boolean> {
     if (typeof window === "undefined" || !("Notification" in window)) {

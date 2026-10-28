@@ -1,5 +1,3 @@
-import { getMinimumBidPaise } from "./bidding";
-
 export type AutoBidCalculationResult = {
   leadingBidderId: string;
   effectiveBidPaise: bigint;
