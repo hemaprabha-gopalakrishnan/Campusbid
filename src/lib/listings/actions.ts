@@ -6,6 +6,7 @@ import { getVerifiedClaims } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { rupeesToPaise } from "./money";
 import { detectImageContentType, listingInputSchema, MAX_LISTING_PHOTOS, MAX_PHOTO_SIZE_BYTES } from "./validation";
+import { notifyMatchingAlertsForListing } from "@/lib/alerts/actions";
 
 const BUCKET = "listing-images";
 const UUID_FILE_NAME = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.(?:jpg|png|webp)$/i;
@@ -136,6 +137,14 @@ export async function createListing(formData: FormData): Promise<ListingActionRe
       .eq("seller_id", userId);
     return { success: false, message: "The listing was saved without its photos. Please retry with the photos selected again." };
   }
+
+  await notifyMatchingAlertsForListing({
+    id: listing.id,
+    title: parsed.data.title,
+    description: parsed.data.description,
+    category: parsed.data.category,
+    starting_price_paise: rupeesToPaise(parsed.data.startingPrice),
+  });
 
   revalidateListings();
   return { success: true, listingId: listing.id };

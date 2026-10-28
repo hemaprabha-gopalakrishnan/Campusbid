@@ -81,6 +81,7 @@ async function MyListingsContent() {
                     {hasBids && <p className="mt-2 text-xs text-[#77747e]">Auction terms are locked after the first bid.</p>}
                   </div>
                   <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+                    <Link className="inline-flex h-9 items-center rounded-md border border-[#514879]/20 bg-[#fbfafc] px-3 text-xs font-semibold text-[#514879] hover:bg-[#514879]/10" href={`/listings/${listing.id}`}>View auction</Link>
                     {canEdit && <Link className="inline-flex h-9 items-center rounded-md border border-[#dedbe3] px-3 text-xs font-medium text-[#514879] hover:bg-[#f8f6fa]" href={`/listings/${listing.id}/edit`}>Edit</Link>}
                     {canCancel && <CancelListingButton listingId={listing.id} />}
                   </div>
