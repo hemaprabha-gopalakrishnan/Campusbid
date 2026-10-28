@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { ArrowRight, Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import { CancelListingButton } from "@/components/listings/cancel-listing-button";
@@ -14,7 +15,7 @@ function formatClosingTime(value: string) {
   }).format(new Date(value));
 }
 
-export default async function MyListingsPage() {
+async function MyListingsContent() {
   const claims = await getVerifiedClaims().catch(() => null);
   if (!claims?.sub) redirect("/sign-in");
 
@@ -90,5 +91,13 @@ export default async function MyListingsPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function MyListingsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f7f6f2]" aria-label="Loading your listings" />}>
+      <MyListingsContent />
+    </Suspense>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { ArrowLeft } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
 import { ListingForm, type ListingFormValues } from "@/components/listings/listing-form";
@@ -10,7 +11,7 @@ type EditListingPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export default async function EditListingPage({ params }: EditListingPageProps) {
+async function EditListingContent({ params }: EditListingPageProps) {
   const claims = await getVerifiedClaims().catch(() => null);
   if (!claims?.sub) redirect("/sign-in");
 
@@ -83,5 +84,13 @@ export default async function EditListingPage({ params }: EditListingPageProps) 
         </div>
       </main>
     </div>
+  );
+}
+
+export default function EditListingPage({ params }: EditListingPageProps) {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f7f6f2]" aria-label="Loading listing" />}>
+      <EditListingContent params={params} />
+    </Suspense>
   );
 }

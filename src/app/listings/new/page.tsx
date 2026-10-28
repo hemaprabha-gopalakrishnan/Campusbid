@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { ArrowLeft } from "lucide-react";
 import { redirect } from "next/navigation";
 import { ListingForm } from "@/components/listings/listing-form";
 import { SiteHeader } from "@/components/site-header";
 import { getVerifiedClaims } from "@/lib/auth";
 
-export default async function NewListingPage() {
+async function NewListingContent() {
   const claims = await getVerifiedClaims().catch(() => null);
   if (!claims?.sub) redirect("/sign-in");
 
@@ -26,5 +27,13 @@ export default async function NewListingPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function NewListingPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f7f6f2]" aria-label="Loading listing form" />}>
+      <NewListingContent />
+    </Suspense>
   );
 }
