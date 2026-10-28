@@ -49,16 +49,18 @@ function SignedOutActions() {
   return (
     <div className="flex items-center gap-2">
       <Link
-        className="hidden px-3 py-2 text-sm font-medium text-[#514879] hover:text-[#282342] sm:inline-flex"
+        className="px-1 py-2 text-[13px] font-medium text-[#514879] hover:text-[#282342] sm:px-3 sm:text-sm"
         href="/sign-in"
       >
         Sign in
       </Link>
       <Link
-        className="inline-flex h-10 items-center gap-2 rounded-md bg-[#514879] px-4 text-sm font-semibold text-white transition hover:bg-[#40385f]"
+        className="inline-flex h-10 items-center gap-2 rounded-md bg-[#514879] px-3 text-[13px] font-semibold text-white transition hover:bg-[#40385f] sm:px-4 sm:text-sm"
         href="/sign-up"
       >
-        Join CampusBid <ArrowRight size={15} aria-hidden="true" />
+        <span className="sm:hidden">Join</span>
+        <span className="hidden sm:inline">Join CampusBid</span>
+        <ArrowRight size={15} aria-hidden="true" />
       </Link>
     </div>
   );
