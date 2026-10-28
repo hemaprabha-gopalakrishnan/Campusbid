@@ -131,7 +131,14 @@ export function ListingForm({ mode, listingId, defaultValues, existingImages = [
 
           if (uploadError) {
             await supabase.storage.from("listing-images").remove(uploadedPaths);
-            setFormError("A photo could not be uploaded. Check your connection and try again.");
+            const uploadMessage = uploadError.message.toLowerCase();
+            if (uploadMessage.includes("bucket not found") || uploadMessage.includes("nosuchbucket")) {
+              setFormError("Photo storage is not initialized. Apply the Supabase migrations with `npx supabase db push`, then try again.");
+            } else if (uploadError.statusCode === "403" || uploadMessage.includes("row-level security")) {
+              setFormError("Supabase denied this photo upload. Confirm you are signed in and the Storage policies from the migrations are applied.");
+            } else {
+              setFormError("A photo could not be uploaded. Check your connection and try again.");
+            }
             setUploading(false);
             return;
           }
