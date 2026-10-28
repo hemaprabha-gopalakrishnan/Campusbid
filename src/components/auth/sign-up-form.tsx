@@ -37,33 +37,39 @@ export function SignUpForm() {
   } = useForm<SignUpValues>({ resolver: zodResolver(signUpSchema) });
 
   async function onSubmit(values: SignUpValues) {
-    const supabase = createClient();
-    const { data, error } = await supabase.auth.signUp({
-      email: values.email,
-      password: values.password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-        data: {
-          display_name: values.displayName,
-          campus_identifier: values.campusIdentifier,
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          data: {
+            display_name: values.displayName,
+            campus_identifier: values.campusIdentifier,
+          },
         },
-      },
-    });
-
-    if (error) {
-      setError("root.server", {
-        message: "We couldn't create your account. Check your details or try signing in.",
       });
-      return;
-    }
 
-    if (data.session) {
-      router.replace("/");
-      router.refresh();
-      return;
-    }
+      if (error) {
+        setError("root.server", {
+          message: "We couldn't create your account. Check your details or try signing in.",
+        });
+        return;
+      }
 
-    setSubmittedEmail(values.email);
+      if (data.session) {
+        router.replace("/");
+        router.refresh();
+        return;
+      }
+
+      setSubmittedEmail(values.email);
+    } catch {
+      setError("root.server", {
+        message: "The registration service is unavailable. Check the Supabase setup and try again.",
+      });
+    }
   }
 
   if (submittedEmail) {
