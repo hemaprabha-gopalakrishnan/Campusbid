@@ -29,18 +29,24 @@ export function SignInForm() {
   } = useForm<SignInValues>({ resolver: zodResolver(signInSchema) });
 
   async function onSubmit(values: SignInValues) {
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword(values);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithPassword(values);
 
-    if (error) {
+      if (error) {
+        setError("root.server", {
+          message: "We couldn't sign you in with those details. Check your email and password.",
+        });
+        return;
+      }
+
+      router.replace("/");
+      router.refresh();
+    } catch {
       setError("root.server", {
-        message: "We couldn't sign you in with those details. Check your email and password.",
+        message: "The sign-in service is unavailable. Check the Supabase setup and try again.",
       });
-      return;
     }
-
-    router.replace("/");
-    router.refresh();
   }
 
   return (
