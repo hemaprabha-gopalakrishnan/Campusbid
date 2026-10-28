@@ -28,6 +28,13 @@ async function AccountActions() {
 
   return (
     <div className="flex items-center gap-3">
+      <Link className="hidden text-sm font-medium text-[#625e69] hover:text-[#282342] sm:inline" href="/my-listings">
+        My listings
+      </Link>
+      <Link className="inline-flex h-9 items-center rounded-md bg-[#c9ef72] px-3 text-xs font-semibold text-[#282342] transition hover:bg-[#d8f59a] sm:text-sm" href="/listings/new">
+        <span className="sm:hidden">List</span>
+        <span className="hidden sm:inline">List an item</span>
+      </Link>
       <span className="hidden max-w-36 truncate text-sm font-medium text-[#514879] sm:inline">
         {profile?.display_name ?? "Campus student"}
       </span>
