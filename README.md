@@ -41,7 +41,8 @@ The initial migration creates the application tables, RLS rules, a public listin
 - [x] Next.js App Router, strict TypeScript, and Tailwind foundation
 - [x] Supabase browser/server clients and Next.js 16 auth-session refresh proxy
 - [ ] Initial schema, RLS, Storage policies, and Realtime migration (drafted; not applied or tested)
-- [ ] Sign-up, sign-in, profile UI, and protected dashboard
+- [x] Sign-up, sign-in, and email-confirmation callback
+- [ ] Profile UI and protected dashboard
 - [ ] Listing creation, editing, photo upload, marketplace search, and detail pages
 - [ ] Transaction-safe bidding and last-minute deadline extensions
 - [ ] Idempotent auction closing and seller approval/handover workflow

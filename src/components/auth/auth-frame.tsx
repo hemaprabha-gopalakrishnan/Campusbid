@@ -46,7 +46,7 @@ export function AuthFrame({ children, mode }: AuthFrameProps) {
 
         <div className="hidden items-center justify-between border-t border-white/15 pt-5 text-xs text-white/55 sm:flex">
           <span>Made for campus life</span>
-          <span>01 / 02</span>
+          <span>{mode === "sign-in" ? "01" : "02"} / 02</span>
         </div>
       </section>
 
