@@ -12,12 +12,17 @@ export function isValidRupeeAmount(value: string) {
   return paise > BigInt(0) && paise <= BigInt(MAX_PRICE_RUPEES) * BigInt(100);
 }
 
-export function rupeesToPaise(value: string) {
-  if (!isValidRupeeAmount(value)) {
+export function paiseToRupees(value: string | number | bigint): number {
+  return Number(BigInt(value)) / 100;
+}
+
+export function rupeesToPaise(value: string | number) {
+  const str = typeof value === "number" ? value.toFixed(2).replace(/\.00$/, "") : value;
+  if (!isValidRupeeAmount(str)) {
     throw new RangeError("Enter a positive amount with up to two decimal places.");
   }
 
-  const [whole, fraction = ""] = value.split(".");
+  const [whole, fraction = ""] = str.split(".");
   return (BigInt(whole) * BigInt(100) + BigInt(fraction.padEnd(2, "0"))).toString();
 }
 

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CalendarClock, Tag } from "lucide-react";
 import { formatPaiseAsINR } from "@/lib/listings/money";
 import type { ListingCategory, ListingCondition, MarketplaceListing } from "@/lib/listings/query-types";
@@ -42,7 +43,8 @@ export function ListingCard({ listing }: ListingCardProps) {
   const imageUrl = listing.images[0]?.url ?? listing.sample_image;
 
   return (
-    <article className="group min-w-0 overflow-hidden rounded-sm border border-black/5 bg-white transition hover:border-[#c5bfce] hover:shadow-[0_5px_16px_rgba(40,35,66,0.09)]">
+    <Link href={`/listings/${listing.id}`} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#514879]">
+      <article className="group min-w-0 overflow-hidden rounded-sm border border-black/5 bg-white transition hover:border-[#c5bfce] hover:shadow-[0_5px_16px_rgba(40,35,66,0.09)]">
       <div
         aria-label={imageUrl ? `${listing.title} photo` : `${categoryLabels[listing.category]} listing`}
         className="relative aspect-square overflow-hidden bg-cover bg-center"
@@ -96,5 +98,6 @@ export function ListingCard({ listing }: ListingCardProps) {
         </div>
       </div>
     </article>
+    </Link>
   );
 }
